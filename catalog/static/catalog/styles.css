@@ -1,7 +1,43 @@
+body {
+    font-family: 'Ysabeau', sans-serif;
+    background-color: #F5F8E8;
+}
+
+h1 {
+    color: #F5F8E8;
+}
+
 .sidebar-nav {
     margin-top: 20px;
     padding: 0;
     list-style: none;
+    background-color: ;
 }
 
+.nav-link {
+    color: #B17A25;
+}
+
+.nav-link:hover {
+    color: #B17A25;
+    text-decoration: underline;
+}
+
+.nav-link:focus {
+    color: #B17A25;
+}
+
+#upper-nav {
+    background-color: #8C582F;
+}
   
+.btn-primary {
+    background-color: #B17A25;
+    border-color: #F5F8E8 ;
+    color: #F5F8E8;
+}
+
+.btn-primary:hover {
+    background-color: #935A0A;
+    border-color: #935A0A;
+}

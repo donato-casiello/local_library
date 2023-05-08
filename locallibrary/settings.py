@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "catalog.apps.CatalogConfig",
+    # Crispy forms apps
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -141,3 +144,6 @@ STATIC_URL = '/static/'
 # Simplified static file serving.
 # https://pypi.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
