@@ -48,6 +48,7 @@ def index(request):
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
+    
     def get_queryset(self):
         return Book.objects.order_by('title')
 
@@ -56,7 +57,10 @@ class BookDetailView(generic.DetailView):
 
 class AuthorListView(generic.ListView):
     model = Author
-
+    
+    def get_queryset(self):
+        return Author.objects.order_by('last_name')
+    
 class AuthorDetailView(generic.DetailView):
     model = Author
 
