@@ -2,15 +2,18 @@ import datetime
 
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.urls import reverse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from .models import Book, Author, BookInstance, Genre
-from catalog.forms import RenewBookForm
+from catalog.forms import RenewBookForm, RegisterUserForm
 
 
 def index(request):
@@ -141,3 +144,32 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
     model = Book
     permission_required = 'catalog.can_mark_returned'
     success_url = reverse_lazy('books')
+    
+class RegisterView(generic.View):
+    def post(self, *args, **kwargs):
+        form = RegisterUserForm(self.request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password1"]
+            is_superuser = form.cleaned_data["is_superuser"]
+            user = authenticate(username=username, password=password)
+            if is_superuser == True:
+                user.is_staff = True
+                user.save()
+            print(user.is_staff)
+            login(self.request, user)
+            return redirect("index")
+        else:
+            messages.error(self.request, "There was an error with your form")
+            form = RegisterUserForm()
+            return render(self.request, "catalog/register.html", {
+                "form" : form
+            })
+        
+    def get(self, *args, **kwargs):
+        form = RegisterUserForm()
+        context = {
+            "form" : form
+        }
+        return render(self.request, "catalog/register.html", context)

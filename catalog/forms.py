@@ -2,6 +2,8 @@ import datetime
 
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from catalog.models import BookInstance, Book
 from django.core.exceptions import ValidationError
@@ -46,3 +48,14 @@ class RenewBookForm(ModelForm):
         fields = ['due_back']
         labels = {'due_back': _('New renewal date')}
         help_texts = {'due_back': _('Enter a date between now and 4 weeks (default 3).')}
+        
+class RegisterUserForm(UserCreationForm):
+    email = forms.EmailField(required=False)
+    first_name = forms.CharField(max_length=50, required=False)
+    last_name = forms.CharField(max_length=50, required=False)
+    is_staff = forms.BooleanField(required=False, widget=forms.CheckboxInput, 
+                    help_text="Designates that this user has access to admin panel (demo purpose)")
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'is_superuser',]
