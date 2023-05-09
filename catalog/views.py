@@ -48,6 +48,8 @@ def index(request):
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
+    def get_queryset(self):
+        return Book.objects.order_by('title')
 
 class BookDetailView(generic.DetailView):
     model = Book
