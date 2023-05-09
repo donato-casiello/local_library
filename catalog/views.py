@@ -11,6 +11,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.forms import TextInput
 
 from .models import Book, Author, BookInstance, Genre
 from catalog.forms import RenewBookForm, RegisterUserForm
@@ -118,7 +119,12 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
     model = Author
     permission_required = 'catalog.can_mark_returned'
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-    initial = {'date_of_death': '11/06/2020'}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'].fields['date_of_birth'].widget.attrs['placeholder'] = 'dd-mm-aaaa'
+        context['form'].fields['date_of_death'].widget.attrs['placeholder'] = 'dd-mm-aaaa'
+        return context
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     model = Author
